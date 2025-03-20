@@ -1,5 +1,5 @@
-name: ai_fashion_coordinator
-description: "An mobile app coordinating daily fashion from user's clothes by generative AI"
+name: raster_ai
+description: "Image generator with AI agent"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev

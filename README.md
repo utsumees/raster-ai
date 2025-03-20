@@ -1,16 +1,16 @@
-# ai_fashion_coordinator
+# Raster.ai
 
-An mobile app coordinating daily fashion from user's clothes by generative AI
+**シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。**
+[![Codemagic build status](https://api.codemagic.io/apps/67dbdd63f2be6be8cf5fc8af/67dbdd63f2be6be8cf5fc8ae/status_badge.svg)](https://codemagic.io/app/67dbdd63f2be6be8cf5fc8af/67dbdd63f2be6be8cf5fc8ae/latest_build)
 
-## Getting Started
+[Progateハッカソン powered by AWS 2025.03](https://progate.connpass.com/event/342402/)提出作品
 
-This project is a starting point for a Flutter application.
+## プロダクト概要
+AIエージェントを使った画像生成サービス。
+従来の画像生成AIでは、複雑なプロンプトを使わなければ思った通りの画像を生成することができませんでした。  
+また、マイナーなある特定の商品などの**固有名詞を含むプロンプトを入力しても、画像生成モデルが未学習で生成できない**といった問題がありました。
 
-A few resources to get you started if this is your first Flutter project:
+このサービスでは、**LLMがユーザが生成したい画像の内容を対話から汲み取り、画像生成モデルのプロンプトを試行錯誤しながらチューニング**することで、
+画像生成モデルが未学習の概念を含む画像も出力できることを目指します。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+「LLMは理解してくれてるけど、生成画像には全然反映されない！」というもどかしさをこのサービスが解決します。
