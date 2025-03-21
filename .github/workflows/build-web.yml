@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v4
       - name: Repository
         id: version
         run: |
@@ -56,12 +56,12 @@ jobs:
         # If you use default URL (do not use custom domain), --base-href option is required.
         run: flutter build web --verbose --release --build-number=${{ github.event.client_payload.build_number }} --base-href /${{ steps.version.outputs.repository }}/
       - name: Upload artifacts to GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: './build/web'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
       # Define Discord description
       - name: Pre-notification process
         if: always()
@@ -72,7 +72,6 @@ jobs:
             echo "description=Please try the latest build [here](https://utsumees.github.io/raster-ai)!" >> $GITHUB_ENV
           else
             echo "description=Please check the details of the latest build results [here](https://github.com/utsumees/raster-ai/deployments/activity_log?environment=github-pages)." >> $GITHUB_ENV
-          fi
         shell: bash
       # Notify Discord Channel
       - name: Notify Discord
