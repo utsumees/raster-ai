@@ -37,11 +37,11 @@ jobs:
         id: version
         run: |
           REPOSITORY=$(echo ${{ github.repository }} | sed -e "s#.*/##")
-          echo ::set-output name=repository::$REPOSITORY
+          echo "repository=$REPOSITORY" >> $GITHUB_OUTPUT
       - name: Install Flutter latest environment
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.4'
+          flutter-version: '3.29.2'
           channel: 'stable'
           cache: true
       - name: Pre-build process
