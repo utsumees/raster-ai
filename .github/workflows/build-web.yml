@@ -72,6 +72,7 @@ jobs:
             echo "description=Please try the latest build [here](https://utsumees.github.io/raster-ai)!" >> $GITHUB_ENV
           else
             echo "description=Please check the details of the latest build results [here](https://github.com/utsumees/raster-ai/deployments/activity_log?environment=github-pages)." >> $GITHUB_ENV
+          fi
         shell: bash
       # Notify Discord Channel
       - name: Notify Discord
