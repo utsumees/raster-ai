@@ -5,8 +5,25 @@ import 'package:flutter/material.dart';
 import 'common.dart';
 import 'prompt.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class LoginSignupPage extends StatefulWidget {
+  final bool isSignup;
+
+  const LoginSignupPage({super.key, this.isSignup = false});
+
+  @override
+  State<StatefulWidget> createState() => _LoginSignupPageState();
+}
+
+class _LoginSignupPageState extends State<LoginSignupPage> {
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _userIdController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +51,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: _userIdController,
                     decoration: InputDecoration(
                       labelText: "ID",
                       border: OutlineInputBorder(
@@ -45,6 +63,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   TextField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
@@ -58,6 +77,13 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
+                      String userId = _userIdController.text.trim();
+                      String password = _passwordController.text.trim();
+                      if (widget.isSignup) {
+                        // サインアップAPIにPOST
+                      } else {
+                        // ログインAPIにPOST
+                      }
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (context) => const PromptInputPage(),
@@ -71,14 +97,32 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 30,
                         vertical: 10,
                       ),
-                      child: Text("ログイン"),
+                      child:
+                          widget.isSignup ? Text("サインアップして開始") : Text("ログイン"),
                     ),
                   ),
+                  if (!widget.isSignup) ...[
+                    const SizedBox(height: 10),
+                    Text("はじめて使いますか？"),
+                    TextButton(
+                      onPressed:
+                          () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => LoginSignupPage(isSignup: true),
+                            ),
+                          ),
+                      child: Text(
+                        "サインアップ",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
