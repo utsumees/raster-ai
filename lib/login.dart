@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 import 'prompt.dart';
 
-const String signUpURL =
+const String signupURL =
     "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/signup";
 const String loginURL =
     "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/login";
@@ -94,27 +94,38 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     onPressed: () async {
                       String userId = _userIdController.text.trim();
                       String password = _passwordController.text.trim();
+                      Widget destination = PromptInputPage();
                       var uri =
                           widget.isSignup
-                              ? Uri.parse(signUpURL)
+                              ? Uri.parse(signupURL)
                               : Uri.parse(loginURL);
                       final headers = {'Content-Type': 'application/json'};
-                      final body = jsonEncode({
-                        "user_id": userId,
-                        "password": password,
-                      });
-                      final res = await http.post(
-                        uri,
-                        headers: headers,
-                        body: body,
-                      );
-                      Widget destination = PromptInputPage();
-                      if (res.statusCode != 200) {
-                        String errorString =
-                            widget.isSignup
-                                ? "既に登録されています"
-                                : "ユーザー名またはパスワードがちがいます";
-                        destination = LoginSignupPage(topMessage: errorString);
+                      try {
+                        final body = jsonEncode({
+                          "user_id": userId,
+                          "password": password,
+                        });
+                        final res = await http.post(
+                          uri,
+                          headers: headers,
+                          body: body,
+                        );
+                        if (200 <= res.statusCode && res.statusCode < 300) {
+                          String errorString =
+                              widget.isSignup
+                                  ? "既に登録されています"
+                                  : "ユーザー名またはパスワードがちがいます";
+                          destination = LoginSignupPage(
+                            topMessage: errorString,
+                          );
+                        }
+                        debugPrint("statusCode: ${res.statusCode}");
+                        debugPrint("responseBody: ${res.body}");
+                      } catch (e) {
+                        debugPrint("[LOGIN ERROR] $e");
+                        destination = LoginSignupPage(
+                          topMessage: "ログイン処理に問題が発生しました: $e",
+                        ); // TODO: Remove $e
                       }
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => destination),
