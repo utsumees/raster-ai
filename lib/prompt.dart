@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:raster_ai/pdca.dart';
 
 import 'common.dart';
 
@@ -24,6 +25,9 @@ class _PromptPageState extends ConsumerState<PromptInputPage> {
     if (prompt.isNotEmpty) {
       // ここで画像生成処理などを行う
       debugPrint("プロンプト: $prompt");
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => PDCAPage()));
     }
   }
 
