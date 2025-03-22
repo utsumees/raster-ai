@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'common.dart';
+import 'prompt.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -29,7 +30,7 @@ class LoginPage extends StatelessWidget {
                   const CircleAvatar(
                     radius: 40,
                     backgroundColor: Colors.white54,
-                    backgroundImage: const AssetImage("images/logo.png"),
+                    backgroundImage: AssetImage("images/logo.png"),
                   ),
                   const SizedBox(height: 20),
                   TextField(
@@ -38,7 +39,7 @@ class LoginPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      fillColor: Colors.white.withOpacity(0.6),
+                      fillColor: Colors.white.withAlpha(60),
                       filled: true,
                     ),
                   ),
@@ -50,14 +51,18 @@ class LoginPage extends StatelessWidget {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      fillColor: Colors.white.withOpacity(0.6),
+                      fillColor: Colors.white.withAlpha(60),
                       filled: true,
                     ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // ログイン処理を追加
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const PromptInputPage(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
