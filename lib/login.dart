@@ -1,14 +1,22 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'common.dart';
 import 'prompt.dart';
 
+const String signUpURL =
+    "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/signup";
+const String loginURL =
+    "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/login";
+
 class LoginSignupPage extends StatefulWidget {
   final bool isSignup;
+  final String? topMessage;
 
-  const LoginSignupPage({super.key, this.isSignup = false});
+  const LoginSignupPage({super.key, this.isSignup = false, this.topMessage});
 
   @override
   State<StatefulWidget> createState() => _LoginSignupPageState();
@@ -50,6 +58,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     backgroundImage: AssetImage("images/logo.png"),
                   ),
                   const SizedBox(height: 20),
+                  if (widget.topMessage != null) ...[
+                    Text(
+                      widget.topMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                   TextField(
                     controller: _userIdController,
                     decoration: InputDecoration(
@@ -76,18 +91,33 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       String userId = _userIdController.text.trim();
                       String password = _passwordController.text.trim();
-                      if (widget.isSignup) {
-                        // サインアップAPIにPOST
-                      } else {
-                        // ログインAPIにPOST
+                      var uri =
+                          widget.isSignup
+                              ? Uri.parse(signUpURL)
+                              : Uri.parse(loginURL);
+                      final headers = {'Content-Type': 'application/json'};
+                      final body = jsonEncode({
+                        "user_id": userId,
+                        "password": password,
+                      });
+                      final res = await http.post(
+                        uri,
+                        headers: headers,
+                        body: body,
+                      );
+                      Widget destination = PromptInputPage();
+                      if (res.statusCode != 200) {
+                        String errorString =
+                            widget.isSignup
+                                ? "既に登録されています"
+                                : "ユーザー名またはパスワードがちがいます";
+                        destination = LoginSignupPage(topMessage: errorString);
                       }
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const PromptInputPage(),
-                        ),
+                        MaterialPageRoute(builder: (context) => destination),
                       );
                     },
                     style: ElevatedButton.styleFrom(
