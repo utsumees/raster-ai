@@ -66,9 +66,9 @@ class GetStartedPage extends ConsumerWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const LoginPage()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const LoginSignupPage()),
+                );
               },
               child: const Text("はじめる"),
             ),

@@ -1,12 +1,37 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'common.dart';
 import 'prompt.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+const String signUpURL =
+    "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/signup";
+const String loginURL =
+    "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/login";
+
+class LoginSignupPage extends StatefulWidget {
+  final bool isSignup;
+  final String? topMessage;
+
+  const LoginSignupPage({super.key, this.isSignup = false, this.topMessage});
+
+  @override
+  State<StatefulWidget> createState() => _LoginSignupPageState();
+}
+
+class _LoginSignupPageState extends State<LoginSignupPage> {
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _userIdController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +58,15 @@ class LoginPage extends StatelessWidget {
                     backgroundImage: AssetImage("images/logo.png"),
                   ),
                   const SizedBox(height: 20),
+                  if (widget.topMessage != null) ...[
+                    Text(
+                      widget.topMessage!,
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    const SizedBox(height: 10),
+                  ],
                   TextField(
+                    controller: _userIdController,
                     decoration: InputDecoration(
                       labelText: "ID",
                       border: OutlineInputBorder(
@@ -45,6 +78,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   TextField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: "Password",
@@ -57,11 +91,33 @@ class LoginPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      String userId = _userIdController.text.trim();
+                      String password = _passwordController.text.trim();
+                      var uri =
+                          widget.isSignup
+                              ? Uri.parse(signUpURL)
+                              : Uri.parse(loginURL);
+                      final headers = {'Content-Type': 'application/json'};
+                      final body = jsonEncode({
+                        "user_id": userId,
+                        "password": password,
+                      });
+                      final res = await http.post(
+                        uri,
+                        headers: headers,
+                        body: body,
+                      );
+                      Widget destination = PromptInputPage();
+                      if (res.statusCode != 200) {
+                        String errorString =
+                            widget.isSignup
+                                ? "既に登録されています"
+                                : "ユーザー名またはパスワードがちがいます";
+                        destination = LoginSignupPage(topMessage: errorString);
+                      }
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => const PromptInputPage(),
-                        ),
+                        MaterialPageRoute(builder: (context) => destination),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -71,14 +127,32 @@ class LoginPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: 30,
                         vertical: 10,
                       ),
-                      child: Text("ログイン"),
+                      child:
+                          widget.isSignup ? Text("サインアップして開始") : Text("ログイン"),
                     ),
                   ),
+                  if (!widget.isSignup) ...[
+                    const SizedBox(height: 10),
+                    Text("はじめて使いますか？"),
+                    TextButton(
+                      onPressed:
+                          () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => LoginSignupPage(isSignup: true),
+                            ),
+                          ),
+                      child: Text(
+                        "サインアップ",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
