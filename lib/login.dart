@@ -110,7 +110,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                           headers: headers,
                           body: body,
                         );
-                        if (200 <= res.statusCode && res.statusCode < 300) {
+                        if (!(200 <= res.statusCode && res.statusCode < 300)) {
                           String errorString =
                               widget.isSignup
                                   ? "既に登録されています"
