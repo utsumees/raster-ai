@@ -25,6 +25,7 @@ class _PromptPageState extends ConsumerState<PromptInputPage> {
     if (prompt.isNotEmpty) {
       // ここで画像生成処理などを行う
       debugPrint("プロンプト: $prompt");
+      ref.read(promptProvider.notifier).state = prompt; // プロンプト保存
       Navigator.of(
         context,
       ).push(MaterialPageRoute(builder: (context) => PDCAPage()));
