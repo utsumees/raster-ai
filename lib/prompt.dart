@@ -3,14 +3,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'common.dart';
 
-class PromptPage extends ConsumerStatefulWidget {
-  const PromptPage({super.key});
+class PromptInputPage extends ConsumerStatefulWidget {
+  const PromptInputPage({super.key});
 
   @override
-  ConsumerState<PromptPage> createState() => _PromptPageState();
+  ConsumerState<PromptInputPage> createState() => _PromptPageState();
 }
 
-class _PromptPageState extends ConsumerState<PromptPage> {
+class _PromptPageState extends ConsumerState<PromptInputPage> {
   final TextEditingController _controller = TextEditingController();
 
   @override

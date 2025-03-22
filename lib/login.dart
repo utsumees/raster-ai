@@ -2,9 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-import 'prompt.dart';
-
 import 'common.dart';
+import 'prompt.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -60,7 +59,9 @@ class LoginPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const PromptPage())
+                        MaterialPageRoute(
+                          builder: (context) => const PromptInputPage(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
