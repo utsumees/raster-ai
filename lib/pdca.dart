@@ -8,6 +8,9 @@ import 'package:http/http.dart' as http;
 import 'common.dart';
 import 'utils/ImageListNotifier.dart';
 
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:logging/logging.dart';
+
 // プロンプトの状態（仮で初期値を入れておきます）
 final promptProvider = StateProvider<String>((ref) => '猫の画像をください。');
 
@@ -172,31 +175,39 @@ class PromptInputField extends StatelessWidget {
   }
 }
 
-class ImageGrid extends HookConsumerWidget {
-  const ImageGrid({super.key});
+class ImageGrid extends StatefulHookConsumerWidget {
+  const ImageGrid({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncImageList = ref.watch(imageListProvider);
-    return asyncImageList.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
-      data:
-          (imageUrls) => GridView.builder(
-            padding: const EdgeInsets.all(8),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-            ),
-            itemCount: imageUrls.length,
-            itemBuilder: (context, index) {
-              return Container(
-                color: Colors.grey[300],
-                child: Image.network(imageUrls[index], fit: BoxFit.cover),
-              );
-            },
-          ),
+  _ImageGridState createState() => _ImageGridState();
+}
+
+class _ImageGridState extends ConsumerState<ImageGrid> {
+  final _channel = WebSocketChannel.connect(
+    Uri.parse(
+      'wss://emed5h4bp1.execute-api.us-west-2.amazonaws.com/v1?userid=uuu',
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    Logger.root.info('WebSocket connected');
+    return StreamBuilder(
+      stream: _channel.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final imageUrl = snapshot.data as String;
+          return Image.network(imageUrl);
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    _channel.sink.close();
+    super.dispose();
   }
 }
