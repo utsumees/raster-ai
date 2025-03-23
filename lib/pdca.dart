@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import 'common.dart';
+import 'utils/ImageListNotifier.dart';
 
 // プロンプトの状態（仮で初期値を入れておきます）
 final promptProvider = StateProvider<String>((ref) => '猫の画像をください。');
@@ -171,25 +172,31 @@ class PromptInputField extends StatelessWidget {
   }
 }
 
-class ImageGrid extends StatelessWidget {
+class ImageGrid extends HookConsumerWidget {
   const ImageGrid({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(8),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemCount: 8,
-      itemBuilder: (context, index) {
-        return Container(
-          color: Colors.grey[300],
-          child: Center(child: Text("写真 ${index + 1}")),
-        );
-      },
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncImageList = ref.watch(imageListProvider);
+    return asyncImageList.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(child: Text('Error: $error')),
+      data:
+          (imageUrls) => GridView.builder(
+            padding: const EdgeInsets.all(8),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
+            ),
+            itemCount: imageUrls.length,
+            itemBuilder: (context, index) {
+              return Container(
+                color: Colors.grey[300],
+                child: Image.network(imageUrls[index], fit: BoxFit.cover),
+              );
+            },
+          ),
     );
   }
 }
