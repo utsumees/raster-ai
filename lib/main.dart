@@ -62,6 +62,10 @@ class GetStartedPage extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text(
+              "Raster.ai",
+              style: TextStyle(color: Colors.white, fontSize: 30),
+            ),
             const Text("シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。"),
             const SizedBox(height: 10),
             ElevatedButton(
