@@ -62,15 +62,23 @@ class GetStartedPage extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。"),
+            const Text(
+              "Raster.ai",
+              style: TextStyle(color: Colors.white, fontSize: 120),
+            ),
             const SizedBox(height: 10),
+            const Text(
+              "シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。",
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => const LoginPage()));
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const LoginSignupPage()),
+                );
               },
-              child: const Text("はじめる"),
+              child: const Text("はじめる", style: TextStyle(fontSize: 35)),
             ),
           ],
         ),
