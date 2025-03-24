@@ -41,7 +41,7 @@ class _PromptPageState extends ConsumerState<PromptInputPage> {
           padding: const EdgeInsets.all(16),
           margin: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withAlpha(80),
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(8),
           ),

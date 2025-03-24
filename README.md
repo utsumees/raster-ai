@@ -5,7 +5,7 @@
 
 [Progateハッカソン powered by AWS 2025.03](https://progate.connpass.com/event/342402/) 提出作品
 
-[![logo](images/logo.png)]
+![logo](images/logo.webp)
 
 ## プロダクト概要
 AIエージェントを使った画像生成サービス。
