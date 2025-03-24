@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// ユーザー or ボットの発話
@@ -18,15 +19,39 @@ class ChatLogNotifier extends StateNotifier<List<ChatMessage>> {
 
   /// メッセージ追加のためのヘルパー
   void addMessage({
-    required String postBy,
+    required MessageSender postBy,
     required String text,
     String? imageUrl,
   }) {
-    final sender = postBy == "user" ? MessageSender.user : MessageSender.bot;
+    debugPrint("addMessage");
     state = [
       ...state,
-      ChatMessage(sender: sender, text: text, imageUrl: imageUrl),
+      ChatMessage(sender: postBy, text: text, imageUrl: imageUrl),
     ];
+  }
+
+  void updateLastMessage({
+    String? newText,
+    String? newImageUrl,
+    bool append = false,
+  }) {
+    if (state.isEmpty) {
+      addMessage(postBy: MessageSender.bot, text: newText ?? "");
+      return;
+    }
+    debugPrint("updateLastMessage");
+
+    final last = state.last;
+    final updated = ChatMessage(
+      sender: last.sender,
+      text:
+          append && newText != null
+              ? last.text + newText
+              : newText ?? last.text,
+      imageUrl: newImageUrl ?? last.imageUrl,
+    );
+
+    state = [...state.sublist(0, state.length - 1), updated];
   }
 
   /// チャットをリセット（必要なら）
