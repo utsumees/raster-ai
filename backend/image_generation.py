@@ -31,7 +31,7 @@ def lambda_handler(event, context):
         # プロンプト送信
         apigw = boto3.client(
             'apigatewaymanagementapi',
-            endpoint_url=f"https://emed5h4bp1.execute-api.us-west-2.amazonaws.com/v1?userid=test&bot"
+            endpoint_url=f"*************************"
         )
         for i, s in enumerate(prompt):
             is_stream = False if i == 0 else True

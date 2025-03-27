@@ -1,11 +1,10 @@
-# Raster.ai
+![Raster.ai](images/banner.png)
 
 **シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。**
 [![Codemagic build status](https://api.codemagic.io/apps/67dbdd63f2be6be8cf5fc8af/67dbdd63f2be6be8cf5fc8ae/status_badge.svg)](https://codemagic.io/app/67dbdd63f2be6be8cf5fc8af/67dbdd63f2be6be8cf5fc8ae/latest_build)
+![GitHub Pages deploy status](https://github.com/github/docs/actions/workflows/build-web.yml/badge.svg)
 
 [Progateハッカソン powered by AWS 2025.03](https://progate.connpass.com/event/342402/) 提出作品
-
-[![logo](images/logo.png)]
 
 ## プロダクト概要
 AIエージェントを使った画像生成サービス。

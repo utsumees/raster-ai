@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 
 import 'common.dart';
-import 'utils/ImageListNotifier.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:logging/logging.dart';
@@ -176,7 +175,7 @@ class PromptInputField extends StatelessWidget {
 }
 
 class ImageGrid extends StatefulHookConsumerWidget {
-  const ImageGrid({Key? key}) : super(key: key);
+  const ImageGrid({super.key});
 
   @override
   _ImageGridState createState() => _ImageGridState();

@@ -41,7 +41,7 @@ def lambda_handler(event, context):
         # 画像送信
         apigw = boto3.client(
             'apigatewaymanagementapi',
-            endpoint_url=f"https://emed5h4bp1.execute-api.us-west-2.amazonaws.com/v1?userid=test&bot"
+            endpoint_url=f"*************************"
         )
         data = {
 	        "type": "image_generation",

@@ -7,7 +7,7 @@ class models(Enum):
     claude_3_5 = "anthropic.claude-3-5-sonnet-20241022-v2:0"
     claude_3_7 = "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
 
-modelRegion = 'us-west-2'
+modelRegion = '********'
 modelId = "anthropic.claude-3-5-sonnet-20241022-v2:0"
 
 def lambda_handler(event, context):
