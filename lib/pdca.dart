@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'common.dart';
-import 'utils/ChatListNotifier.dart';
-
+import 'utils/chat_list_notifier.dart';
 
 final promptProvider = StateProvider<String>((ref) => '');
 final userIdProvider = StateProvider<String>((ref) => '');
@@ -345,7 +344,6 @@ class PromptInputField extends ConsumerWidget {
     );
   }
 }
-
 
 class ImageGrid extends HookConsumerWidget {
   const ImageGrid({super.key});
