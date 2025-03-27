@@ -1,3 +1,5 @@
+import 'dart:math' as math; // clamp用
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -56,20 +58,35 @@ class GetStartedPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 画面サイズから短辺を取得
+    final shortestSide = MediaQuery.of(context).size.shortestSide;
+
+    // 大きすぎないように clamp して制限する例:
+    final double mainTitleSize = math.min(80, shortestSide * 0.20); // 大タイトル
+    final double subTitleSize = math.min(24, shortestSide * 0.06); // 小タイトル
+    final double buttonTextSize = math.min(30, shortestSide * 0.08); // ボタンテキスト
+
     return CommonScaffold(
       appBar: false,
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
+            // 大タイトル
+            Text(
               "Raster.ai",
-              style: TextStyle(color: Colors.white, fontSize: 120),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: mainTitleSize,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            // 小タイトル
+            Text(
               "シンプルなプロンプトからはじめて、思い通りの画像を生成しよう。",
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: subTitleSize),
+              textAlign: TextAlign.center, // 中央寄せするなら
             ),
             const SizedBox(height: 50),
             ElevatedButton(
@@ -78,7 +95,7 @@ class GetStartedPage extends ConsumerWidget {
                   MaterialPageRoute(builder: (_) => const LoginSignupPage()),
                 );
               },
-              child: const Text("はじめる", style: TextStyle(fontSize: 35)),
+              child: Text("はじめる", style: TextStyle(fontSize: buttonTextSize)),
             ),
           ],
         ),

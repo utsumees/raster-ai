@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:raster_ai/pdca.dart';
 
 import 'common.dart';
 import 'prompt.dart';
@@ -12,17 +14,18 @@ const String signupURL =
 const String loginURL =
     "https://rw4mikh1ia.execute-api.us-west-2.amazonaws.com/v1/login";
 
-class LoginSignupPage extends StatefulWidget {
+class LoginSignupPage extends ConsumerStatefulWidget {
   final bool isSignup;
   final String? topMessage;
 
   const LoginSignupPage({super.key, this.isSignup = false, this.topMessage});
 
   @override
-  State<StatefulWidget> createState() => _LoginSignupPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LoginSignupPageState();
 }
 
-class _LoginSignupPageState extends State<LoginSignupPage> {
+class _LoginSignupPageState extends ConsumerState<LoginSignupPage> {
   final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -93,6 +96,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   ElevatedButton(
                     onPressed: () async {
                       String userId = _userIdController.text.trim();
+                      ref.read(userIdProvider.notifier).state = userId;
                       String password = _passwordController.text.trim();
                       Widget destination = PromptInputPage();
                       var uri =
@@ -113,8 +117,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                         if (!(200 <= res.statusCode && res.statusCode < 300)) {
                           String errorString =
                               widget.isSignup
-                                  ? "既に登録されています"
-                                  : "ユーザー名またはパスワードがちがいます";
+                                  ? "既に登録されています。"
+                                  : "ユーザー名またはパスワードが違います。";
                           destination = LoginSignupPage(
                             topMessage: errorString,
                           );
@@ -124,9 +128,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       } catch (e) {
                         debugPrint("[LOGIN ERROR] $e");
                         destination = LoginSignupPage(
-                          topMessage: "ログイン処理に問題が発生しました: $e",
-                        ); // TODO: Remove $e
+                          topMessage: "ログイン処理に問題が発生しました。\nのちほど再度お試しください。",
+                        );
                       }
+                      if (!context.mounted) return;
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) => destination),
                       );

@@ -50,8 +50,8 @@ jobs:
           flutter clean
           flutter pub get
           # flutter gen-l10n
-          # flutter pub run icons_launcher:create
-          # flutter pub run flutter_native_splash:create
+          # dart run flutter_launcher_icons
+          # dart run flutter_native_splash:create
       - name: Build Flutter project
         # If you use default URL (do not use custom domain), --base-href option is required.
         run: flutter build web --verbose --release --build-number=${{ github.event.client_payload.build_number }} --base-href /${{ steps.version.outputs.repository }}/
