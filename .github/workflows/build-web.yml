@@ -1,5 +1,5 @@
 # Workflow for deploying Raster.ai to GitHub Pages
-name: Deploy to GitHub Pages
+name: GitHub Pages
 
 on:
   # Triggered from Codemagic workflow or contributors.
